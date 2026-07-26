@@ -119,7 +119,7 @@ describe('CheckoutPage', () => {
     expect(await screen.findByText(/resumen del pago/i)).toBeInTheDocument();
     expect(screen.getByText(/tarifa base/i)).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: /^pagar/i }));
+    await userEvent.click(screen.getByRole('button', { name: /^pagar \$/i }));
 
     expect(await screen.findByText(/pago aprobado/i)).toBeInTheDocument();
     expect(api.createTransaction).toHaveBeenCalledTimes(1);
@@ -147,7 +147,7 @@ describe('CheckoutPage', () => {
       await screen.findByRole('button', { name: /pagar con tarjeta/i }),
     );
     await fillForm();
-    await userEvent.click(screen.getByRole('button', { name: /^pagar/i }));
+    await userEvent.click(screen.getByRole('button', { name: /^pagar \$/i }));
 
     expect(await screen.findByText('Card declined')).toBeInTheDocument();
   });
@@ -207,7 +207,7 @@ describe('CheckoutPage', () => {
       await screen.findByRole('button', { name: /pagar con tarjeta/i }),
     );
     await fillForm();
-    await userEvent.click(screen.getByRole('button', { name: /^pagar/i }));
+    await userEvent.click(screen.getByRole('button', { name: /^pagar \$/i }));
     await screen.findByText(/pago aprobado/i);
 
     await userEvent.click(screen.getByRole('button', { name: /volver a la tienda/i }));

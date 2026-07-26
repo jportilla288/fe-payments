@@ -34,9 +34,44 @@ body {
   padding: 20px 16px 64px;
 }
 
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .page-header h1 {
-  margin: 0 0 4px;
-  font-size: 1.6rem;
+  margin: 0 0 2px;
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+
+.store-logo {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+}
+
+.logo-plate {
+  fill: var(--accent);
+}
+
+.logo-bag {
+  fill: #ffffff;
+  fill-opacity: 0.16;
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.logo-handle {
+  stroke: #ffffff;
+}
+
+.logo-text {
+  fill: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 
 .muted {
@@ -84,8 +119,19 @@ body {
 
 .product-image {
   position: relative;
-  aspect-ratio: 3 / 2;
+  /* A fixed height keeps every card's image identical. aspect-ratio alone
+     lets grid rows stretch unevenly when descriptions differ in length. */
+  height: 190px;
+  flex: 0 0 190px;
   background: var(--surface-2);
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .product-image {
+    height: 210px;
+    flex-basis: 210px;
+  }
 }
 
 .product-image img,

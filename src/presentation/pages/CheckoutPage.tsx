@@ -20,6 +20,7 @@ import { localStorageAdapter } from '../../infrastructure/persistence/local-stor
 import { CardBrandService } from '../../domain/services';
 import type { Product } from '../../domain/models';
 import { ProductCard } from '../components/ProductCard';
+import { StoreLogo } from '../components/StoreLogo';
 import { PaymentModal } from '../components/PaymentModal';
 import { SummaryBackdrop } from '../components/SummaryBackdrop';
 import { ProcessingScreen } from '../components/ProcessingScreen';
@@ -77,8 +78,11 @@ export function CheckoutPage() {
   return (
     <main className="page">
       <header className="page-header">
-        <h1>Tienda</h1>
-        <p className="muted">Elige un producto y paga con tarjeta.</p>
+        <StoreLogo />
+        <div>
+          <h1>Tienda Virtual JAPL</h1>
+          <p className="muted">Elige un producto y paga con tarjeta.</p>
+        </div>
       </header>
 
       {loading && <p className="muted">Cargando productos…</p>}

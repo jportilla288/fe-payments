@@ -41,8 +41,8 @@ describe('SummaryBackdrop', () => {
 
     expect(screen.getByText(/tarifa base/i)).toBeInTheDocument();
     expect(screen.getByText(/env[íi]o/i)).toBeInTheDocument();
-    expect(screen.getByText(/^Total$/)).toBeInTheDocument();
-    expect(screen.getByText(/2\.700/)).toBeInTheDocument();
+    // The total also appears inside the pay button, so assert on its own row.
+    expect(screen.getByText(/^Total$/).parentElement).toHaveTextContent('2.700');
   });
 
   it('shows the masked card', () => {
@@ -56,7 +56,7 @@ describe('SummaryBackdrop', () => {
     const onPay = jest.fn();
     renderBackdrop({ onPay });
 
-    await userEvent.click(screen.getByRole('button', { name: /pagar/i }));
+    await userEvent.click(screen.getByRole('button', { name: /^pagar \$/i }));
 
     expect(onPay).toHaveBeenCalled();
   });

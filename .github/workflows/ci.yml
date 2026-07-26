@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [dev, qa, uat, main, 'feature/**', 'fix/**']
+  pull_request:
+    branches: [dev, qa, uat, main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-and-test:
+    name: Build, test and analyse
+    runs-on: ubuntu-latest
+
+    env:
+      # Exposed at job level so the Sonar step can read it in its `if`
+      # (the `secrets` context is not allowed inside step conditions).
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npx oxlint
+
+      - name: Type check
+        run: npx tsc -b --noEmit
+
+      - name: Unit tests with coverage
+        run: npm run test:cov
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: coverage
+          path: coverage/
+
+      # Skipped automatically until SONAR_TOKEN is configured in the repo secrets.
+      - name: SonarQube Cloud scan
+        if: ${{ env.SONAR_TOKEN != '' }}
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_HOST_URL: https://sonarcloud.io

@@ -1,0 +1,25 @@
+node_modules/
+dist/
+coverage/
+*.lcov
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor and OS
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.tsbuildinfo
+
+# Local agent/IDE scratch
+.claude/
+.windsurf/
+.agents/

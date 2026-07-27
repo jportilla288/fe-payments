@@ -4,7 +4,10 @@ Single page application for a one-product credit-card checkout. Built with
 **React 19 + TypeScript + Vite**, state managed with **Redux Toolkit** following
 Flux principles, and a hexagonal folder structure that mirrors the backend.
 
-> Backend API: [`ms-payments`](https://github.com/jportilla288/ms-payments)
+> **Live app: <https://fe-payments.onrender.com>**
+> Backend API: [`ms-payments`](https://github.com/jportilla288/ms-payments) —
+> live at <https://ms-payments-1.onrender.com/api>
+> ([Swagger](https://ms-payments-1.onrender.com/api/docs))
 
 ---
 
@@ -82,14 +85,16 @@ npm test          # unit tests
 npm run test:cov  # coverage report
 ```
 
-<!-- Paste the latest `npm run test:cov` summary here before submitting. -->
+**Result: 96 tests across 16 suites, all passing.**
 
-| Metric     | Coverage |
-| ---------- | -------- |
-| Statements | 92.89%   |
-| Branches   | 85.87%   |
-| Functions  | 90.21%   |
-| Lines      | 92.47%   |
+| Metric     | Coverage | Threshold |
+| ---------- | -------- | --------- |
+| Statements | 92.89%   | 80%       |
+| Branches   | 85.87%   | 70%       |
+| Functions  | 90.21%   | 80%       |
+| Lines      | 92.47%   | 80%       |
+
+Jest enforces these thresholds, so the pipeline fails if coverage drops.
 
 Covered: domain services (Luhn, brand detection, fees), the Redux slices
 including every thunk state, the API adapter and its error mapping, the
@@ -98,8 +103,25 @@ full happy path from catalogue to approved payment.
 
 ## Deployment
 
-<!-- Add the public URL once deployed. -->
+| Component | Provider | URL                                           |
+| --------- | -------- | --------------------------------------------- |
+| SPA       | Render   | <https://fe-payments.onrender.com>            |
+| API       | Render   | <https://ms-payments-1.onrender.com/api>      |
+| Swagger   | Render   | <https://ms-payments-1.onrender.com/api/docs> |
 
-| Component | Provider | URL |
-| --------- | -------- | --- |
-| SPA       |          |     |
+Built with `npm ci && npm run build`, published from `dist`, with a
+`/* → /index.html` rewrite so client-side routes survive a page refresh.
+`VITE_API_BASE_URL` is injected at build time.
+
+### Notes for reviewers
+
+- **Cold start.** The API runs on Render's free tier and sleeps after 15 minutes
+  idle. The first load of a session may take ~50 seconds while it wakes up; the
+  catalogue will appear once it does.
+- **Test cards.** `4242 4242 4242 4242` (VISA) and `5555 5555 5555 4444`
+  (Mastercard). The brand logo appears as you type. A random number is rejected
+  by the Luhn checksum.
+- **Mobile first.** Best viewed at 375px wide (iPhone SE). Use the browser's
+  device toolbar to check the responsive behaviour.
+- **Refresh resilience.** Start a checkout, reload the page mid-flow, and the
+  progress is restored from `localStorage` — without the card data.

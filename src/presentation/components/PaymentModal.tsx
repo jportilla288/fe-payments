@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FormEventHandler,
+} from 'react';
 import { CardBrand, DocumentType } from '../../domain/enums';
 import { CardBrandService } from '../../domain/services';
 import type { CardInput, CustomerInput, DeliveryInput } from '../../domain/models';
@@ -102,7 +108,7 @@ export function PaymentModal({ onClose, onSubmit }: Props) {
     return found;
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     const found = validate();
     setErrors(found);
